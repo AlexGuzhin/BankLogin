@@ -1,16 +1,17 @@
-package ru.netology.banklogin.page
+package ru.netology.banklogin.test;
 
 
 import org.junit.jupiter.api.*;
 import ru.netology.banklogin.data.DataHelper;
 import ru.netology.banklogin.data.SQLHelper;
+import ru.netology.banklogin.page.LoginPage;
 
-import static java.nio.channels.FileChannel.open;
+import static com.codeborne.selenide.Selenide.open;
 import static ru.netology.banklogin.data.SQLHelper.cleanAuthCodes;
 import static ru.netology.banklogin.data.SQLHelper.cleanDatabase;
 
 public class BankLoginTest {
-    loginPage loginPage;
+    LoginPage loginPage;
 
     @AfterEach
     void tearDown() {
@@ -49,8 +50,8 @@ public class BankLoginTest {
     void shouldGetErrorNotificationIFLoginWithExistUserAndRandomVerificationCode() {
         var authInfo = DataHelper.getAuthInfoWithTestData();
         var verificationPage = loginPage.validLogin(authInfo);
-        verificationPage.verificationPageVisiblity();
-        var verificationCode = DataHelper.generateRandomverificationCode();
+        verificationPage.verifyVerificationPageVisiblity();
+        var verificationCode = DataHelper.generateRandomVerificationCode();
         verificationPage.verify(verificationCode.getCode());
         verificationPage.verifyErrorNotification("Ошибка! \nНеверно указан код! Попробуйте еще раз.");
     }
